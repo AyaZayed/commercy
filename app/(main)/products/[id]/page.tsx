@@ -1,5 +1,15 @@
 import ProductDetails from "@/components/products/[id]/ProductDetails";
-import { getProductById } from "@/utils/products";
+import Product from "@/lib/models/product";
+import { connectDB } from "@/lib/mongodb";
+
+import { IProduct } from "@/lib/types/product";
+
+export async function getProductById(id: string): Promise<IProduct> {
+   await connectDB();
+   const product = await Product.findById(id).lean<IProduct>();
+   if (!product) throw new Error("Product not found");
+   return product;
+}
 
 // metadata generation
 export async function generateMetadata({
