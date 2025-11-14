@@ -2,6 +2,10 @@ import ProductCard from "@/components/products/ProductCard";
 import { IProduct } from "@/lib/types/product";
 import { getAllProducts } from "@/utils/products";
 
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
+
 export default async function Products() {
    const products = await getAllProducts();
 
