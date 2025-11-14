@@ -15,7 +15,7 @@ const youngSerif = Young_Serif({
 });
 
 export const metadata: Metadata = {
-   title: "E-Commerce",
+   title: "Commercy",
    description: "Practice project",
 };
 

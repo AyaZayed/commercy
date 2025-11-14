@@ -3,14 +3,14 @@ import Product from "@/lib/models/product";
 import { connectDB } from "@/lib/mongodb";
 import { IProduct } from "@/lib/types/product";
 
+// Extend IProduct with _id as string for Lean objects
 type ProductLean = IProduct & { _id: string };
 
 // Generate static params for SSG
 export async function generateStaticParams() {
    await connectDB();
 
-   const products: ProductLean[] = await Product.find({}).lean<ProductLean[]>();
-
+   const products: ProductLean[] = await Product.find({}).lean<ProductLean[]>(); // array
    return products.map((p) => ({
       id: p._id.toString(),
    }));
@@ -20,7 +20,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { id: string } }) {
    await connectDB();
 
-   const product = await Product.findById(params.id).lean<ProductLean>();
+   const product: ProductLean | null = await Product.findById(
+      params.id
+   ).lean<ProductLean>();
    if (!product) {
       return {
          title: "Product not found",
