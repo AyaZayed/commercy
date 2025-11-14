@@ -75,6 +75,7 @@ npm install
 
 ```env
 MONGODB_URI=your_mongodb_connection_string
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
 ```
 
 4. Run the development server:
