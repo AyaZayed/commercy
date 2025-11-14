@@ -2,6 +2,10 @@ import { IProduct } from "@/lib/types/product";
 import { getAllProducts } from "@/utils/products";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
+
 export default async function DashboardPage() {
    const products = await getAllProducts();
 

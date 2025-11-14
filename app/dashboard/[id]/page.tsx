@@ -1,6 +1,10 @@
 import EditProduct from "@/components/dashboard/[id]/EditProduct";
 import { getProductById } from "@/utils/products";
 
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
+
 export default async function EditProductPage({
    params,
 }: {

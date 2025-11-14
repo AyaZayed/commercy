@@ -1,5 +1,9 @@
 import DeleteForm from "@/components/dashboard/[id]/DeleteForm";
 
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
+
 export default async function DeleteProduct({
    params,
 }: {
