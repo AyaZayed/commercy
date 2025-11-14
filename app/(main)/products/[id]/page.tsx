@@ -1,35 +1,51 @@
 import ProductDetails from "@/components/products/[id]/ProductDetails";
-import { getAllProducts, getProductById } from "@/utils/products";
+import Product from "@/lib/models/product";
+import { connectDB } from "@/lib/mongodb";
+import { IProduct } from "@/lib/types/product";
 
-// static generation
+type ProductLean = IProduct & { _id: string };
+
+// Generate static params for SSG
 export async function generateStaticParams() {
-   const products = await getAllProducts();
-   const ids = products.map((product) => ({ id: product.id.toString() }));
-   return ids;
+   await connectDB();
+
+   const products: ProductLean[] = await Product.find({}).lean<ProductLean[]>();
+
+   return products.map((p) => ({
+      id: p._id.toString(),
+   }));
 }
 
-// metadata generation
-export async function generateMetadata({
-   params,
-}: {
-   params: Promise<{ id: string }>;
-}) {
-   const { id } = await params;
-   const product = await getProductById(id);
+// Generate metadata for each product page
+export async function generateMetadata({ params }: { params: { id: string } }) {
+   await connectDB();
+
+   const product = await Product.findById(params.id).lean<ProductLean>();
+   if (!product) {
+      return {
+         title: "Product not found",
+         description: "",
+      };
+   }
+
    return {
       title: product.title,
       description: product.description,
    };
 }
 
+// Product details page
 export default async function DetailsPage({
    params,
 }: {
-   params: Promise<{ id: string }>;
+   params: { id: string };
 }) {
-   const { id } = await params;
+   await connectDB();
 
-   const product = await getProductById(id);
+   const product = await Product.findById(params.id).lean<ProductLean>();
+   if (!product) {
+      return <p>Product not found</p>;
+   }
 
    return <ProductDetails product={product} />;
 }
